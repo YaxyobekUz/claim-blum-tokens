@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 const LayoutTabs = () => {
   return (
-    <nav className="py-0.5 bg-secondary">
+    <nav className="py-0.5 bg-black border-t-2 border-secondary">
       <div className="container">
         {/* tabs */}
         <ul className="flex items-center justify-between">
