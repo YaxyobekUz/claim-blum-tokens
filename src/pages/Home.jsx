@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Blum from "../components/img/Blum";
 
 // images
-import hexagonImg from "../assets/images/others/hexagon-money.png";
+import hexagonImg from "../assets/images/others/hexagon-money.svg";
 import profileImage from "../assets/images/profile/profile-pic-1.png";
 
 const Home = () => {
@@ -13,7 +13,7 @@ const Home = () => {
     <div className="flex flex-col gap-5 container pb-5 h-full">
       {/* header */}
       <header className="py-5 mb-3">
-        <div className="flex items-center justify-between bg-secondary px-4 py-3.5 rounded-xl md:py-4">
+        <div className="flex items-center justify-between bg-secondary px-4 py-3 rounded-xl md:py-4">
           <div className="flex items-center gap-3.5 md:gap-5">
             <img
               width={36}
@@ -37,7 +37,7 @@ const Home = () => {
           {/* balance history link */}
           <Link
             to="/balance/history"
-            className="bg-secondary px-3 py-2 rounded-full text-sm font-semibold"
+            className="bg-secondary px-3 py-1.5 rounded-full text-sm font-semibold"
           >
             Tarix
           </Link>
