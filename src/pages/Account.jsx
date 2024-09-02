@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import Blum from "../components/img/Blum";
 
 // images
-import hexagonImg from "../assets/images/others/hexagon-money.svg";
 import profileImage from "../assets/images/profile/profile-pic-1.png";
 
 const Account = () => {
