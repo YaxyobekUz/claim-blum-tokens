@@ -8,7 +8,7 @@ const MainRoot = () => {
   return (
     <div className="overflow-hidden h-screen">
       {/* body */}
-      <div className="h-[calc(100%-68px)] overflow-auto">
+      <div className="h-[calc(100%-68px)] overflow-auto scroll-smooth">
         <Outlet />
       </div>
 
