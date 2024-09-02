@@ -1,0 +1,15 @@
+.markdown-text {
+  font-weight: normal;
+  color: #b3b3b3;
+}
+
+.markdown-text strong {
+  color: #f1f1f1;
+}
+.markdown-text a {
+  color: #1e9aff;
+}
+
+.markdown-text strong {
+  font-weight: 500;
+}
