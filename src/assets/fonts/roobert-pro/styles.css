@@ -1,0 +1,32 @@
+@font-face {
+  font-family: "Roobert PRO";
+  src: url("RoobertPRO-Bold.eot") format("embedded-opentype"),
+    url("RoobertPRO-Bold.woff2") format("woff2"),
+    url("RoobertPRO-Bold.woff") format("woff"),
+    url("RoobertPRO-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roobert PRO";
+  src: url("RoobertPRO-Medium.eot") format("embedded-opentype"),
+    url("RoobertPRO-Medium.woff2") format("woff2"),
+    url("RoobertPRO-Medium.woff") format("woff"),
+    url("RoobertPRO-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roobert PRO";
+  src: url("RoobertPRO-Regular.eot") format("embedded-opentype"),
+    url("RoobertPRO-Regular.woff2") format("woff2"),
+    url("RoobertPRO-Regular.woff") format("woff"),
+    url("RoobertPRO-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
