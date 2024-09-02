@@ -8,7 +8,7 @@ const MainRoot = () => {
   return (
     <div className="overflow-hidden h-screen">
       {/* body */}
-      <div className="h-[calc(100%-68px)]">
+      <div className="h-[calc(100%-68px)] overflow-auto">
         <Outlet />
       </div>
 
