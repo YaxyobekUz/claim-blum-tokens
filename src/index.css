@@ -10,6 +10,16 @@
   body {
     @apply bg-black text-white text-base font-medium font-Roobert-Pro;
   }
+
+  input,
+  select,
+  textarea {
+    @apply block w-full bg-transparent py-3.5 px-3.5 rounded-xl border-2 border-secondary transition-colors duration-300 outline-none focus:border-white;
+  }
+
+  option {
+    @apply bg-black;
+  }
 }
 
 @layer components {
