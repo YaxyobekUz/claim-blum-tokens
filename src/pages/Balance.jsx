@@ -10,7 +10,7 @@ import profileImage from "../assets/images/profile/profile-pic-1.png";
 const Balance = () => {
   return (
     <div className="flex flex-col gap-5 container py-5 h-full">
-      {/* mid content (profile wrapper) */}
+      {/* main content */}
       <div className="flex flex-col items-center justify-center mb-auto">
         {/* profile image */}
         <img
@@ -22,7 +22,7 @@ const Balance = () => {
         />
 
         {/* user name */}
-        <h1 className="text-2xl text-center line-clamp-2 mb-8">MrYaxyobek</h1>
+        <h1 className="text-2xl text-center font-bold line-clamp-2 mb-8">MrYaxyobek</h1>
 
         {/* user name */}
         <p className="text-center line-clamp-2 font-normal mb-4 opacity-70">
@@ -42,7 +42,7 @@ const Balance = () => {
       {/* claim link */}
       <Link
         to="/balance/history"
-        className="flex items-center justify-center gap-3.5 w-full h-14 bg-white rounded-xl"
+        className="flex items-center justify-center gap-3.5 shrink-0 w-full h-14 bg-white rounded-xl"
       >
         {/* blum logo icon */}
         <Blum size={20} fill="#000000" />

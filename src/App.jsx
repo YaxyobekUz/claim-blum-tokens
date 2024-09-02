@@ -8,6 +8,7 @@ import MainRoot from "./layouts/MainRoot";
 import Home from "./pages/Home";
 import Docs from "./pages/Docs";
 import Balance from "./pages/Balance";
+import Account from "./pages/Account";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="docs" element={<Docs />} />
           <Route path="balance" element={<Balance />} />
+          <Route path="account" element={<Account />} />
         </Route>
       </Routes>
     </Router>
