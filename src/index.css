@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-black text-white text-base font-medium font-Roobert-Pro;
+  }
+}
+
+@layer components {
+  .layout-tabs-link {
+    @apply flex flex-col items-center justify-center gap-0.5 size-16 opacity-60 transition-colors duration-300;
+  }
+
+  .fill {
+    @apply transition-colors duration-300;
+  }
+
+  .layout-tabs-link.active {
+    @apply opacity-100;
+  }
+  .layout-tabs-link.active .fill {
+    fill: rgba(255, 255, 255, 0.2);
+  }
+}
+
+@layer utilities {
+  .container {
+    @apply max-w-7xl w-full px-5 mx-auto;
+  }
+}
