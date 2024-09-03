@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Docs from "./pages/Docs";
 import Balance from "./pages/Balance";
 import Account from "./pages/Account";
+import ClaimTokens from "./pages/ClaimTokens";
 import BalanceHistory from "./pages/BalanceHistory";
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="docs" element={<Docs />} />
           <Route path="balance" element={<Balance />} />
           <Route path="account" element={<Account />} />
+          <Route path="claim-tokens" element={<ClaimTokens />} />
           <Route path="balance/history" element={<BalanceHistory />} />
         </Route>
       </Routes>
