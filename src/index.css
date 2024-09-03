@@ -14,13 +14,13 @@
   input,
   select,
   textarea {
-    @apply block w-full bg-transparent py-3.5 px-3.5 rounded-xl border-2 border-secondary transition-colors duration-300 outline-none focus:border-white;
+    @apply block w-full bg-transparent py-3.5 px-3.5 rounded-xl border-2 border-secondary transition-colors duration-300 outline-none focus:border-white disabled:opacity-50;
   }
 
   option {
     @apply bg-black;
   }
-}
+} 
 
 @layer components {
   .layout-tabs-link {

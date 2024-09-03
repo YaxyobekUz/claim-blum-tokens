@@ -1,16 +1,35 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 // components
 import Blum from "../components/img/Blum";
 
 const ClaimTokens = () => {
+  const countRef = useRef(null);
   const consoleRef = useRef(null);
   const [JWT, setJWT] = useState(null);
   const [loader, setLoader] = useState(false);
+  const [tokensCount, setTokensCount] = useState(380);
   const savedToken = localStorage.getItem("gameToken");
   const [requestsCount, setRequestsCount] = useState(1);
-  const [tokensCount, setTokensCount] = useState("random");
   const baseUrl = "https://game-domain.blum.codes/api/v1/game/";
+
+  const displayCount = (count) => {
+    let s = count;
+    let ms = count * 1000;
+
+    if (countRef) {
+      countRef.current.innerHTML = s;
+
+      const interval = setInterval(() => {
+        s = s - 1;
+        countRef.current.innerHTML = s;
+      }, 1000);
+
+      setTimeout(() => {
+        clearInterval(interval);
+      }, ms);
+    }
+  };
 
   // display request response
   const displayRequestResponse = (msg, index) => {
@@ -29,21 +48,6 @@ const ClaimTokens = () => {
     return new Promise((resolve) => setTimeout(resolve, ms));
   };
 
-  const selectBlumPoints = () => {
-    let points = 136;
-    if (tokensCount === "many") {
-      points = Math.floor(Math.random() * 31) + 150;
-    } else if (tokensCount === "medium") {
-      points = Math.floor(Math.random() * 31) + 125;
-    } else if (tokensCount === "less") {
-      points = Math.floor(Math.random() * 31) + 100;
-    } else {
-      points = Math.floor(Math.random() * 121) + 80;
-    }
-
-    return points;
-  };
-
   // start
   const onStart = async () => {
     // add loader
@@ -52,7 +56,7 @@ const ClaimTokens = () => {
     // claim tokens
     for (let i = 0; i < requestsCount; i++) {
       // claim points
-      const points = selectBlumPoints();
+      const points = tokensCount;
 
       // req headers
       const headers = {
@@ -90,6 +94,7 @@ const ClaimTokens = () => {
         // playing
         const playTime = Math.floor(Math.random() * 11 + 50) * 1000;
         const msToS = playTime / 1000 + "s";
+        displayCount(playTime / 1000);
         displayRequestResponse("Tokenlarni yig'ish uchun vaqt: " + msToS, i);
         await wait(playTime);
 
@@ -111,9 +116,10 @@ const ClaimTokens = () => {
         displayRequestResponse("Yig'ilgan tokenlar: " + points, i);
 
         // sleep 2
-        if (requestsCount > 1) {
+        if (requestsCount > 1 && requestsCount - 1 !== i) {
           const sleep = Math.floor(Math.random() * 6 + 15) * 1000;
           const msToS = sleep / 1000 + "s";
+          displayCount(sleep / 1000);
           displayRequestResponse("Keyingi o'yin boshlanadi: " + msToS);
           await wait(sleep);
         } else {
@@ -171,20 +177,18 @@ const ClaimTokens = () => {
             <div className="space-y-2.5">
               <label htmlFor="tokens-count">Tokenlarni olish*</label>
 
-              {/* select */}
-              <select
-                className="h-14"
+              {/* input */}
+              <input
+                max={400}
+                type="number"
+                maxLength={3}
                 id="tokens-count"
                 disabled={loader}
+                defaultValue={380}
                 name="tokens-count"
-                defaultValue="random"
-                onChange={(e) => setTokensCount(e.target.value)}
-              >
-                <option value="many">Ko'proq</option>
-                <option value="medium">O'rta</option>
-                <option value="less">Kamroq</option>
-                <option value="random">Tasodifiy</option>
-              </select>
+                placeholder="Olinadigan tokenni kiriting..."
+                onChange={(e) => setTokensCount(Number(e.target.value.trim()))}
+              />
             </div>
 
             {/* requests */}
@@ -204,6 +208,21 @@ const ClaimTokens = () => {
                 <option value="3">3 marta</option>
                 <option value="4">4 marta</option>
                 <option value="5">5 marta</option>
+                <option value="6">6 marta</option>
+                <option value="7">7 marta</option>
+                <option value="8">8 marta</option>
+                <option value="9">9 marta</option>
+                <option value="10">10 marta</option>
+                <option value="11">11 marta</option>
+                <option value="12">12 marta</option>
+                <option value="13">13 marta</option>
+                <option value="14">14 marta</option>
+                <option value="15">15 marta</option>
+                <option value="16">16 marta</option>
+                <option value="17">17 marta</option>
+                <option value="18">18 marta</option>
+                <option value="19">19 marta</option>
+                <option value="20">20 marta</option>
               </select>
             </div>
 
@@ -211,12 +230,19 @@ const ClaimTokens = () => {
             <button
               disabled={loader}
               onClick={onStart}
-              className="flex items-center justify-center gap-3.5 shrink-0 w-full h-14 bg-white rounded-xl"
+              className="flex items-center justify-center gap-3.5 shrink-0 w-full h-14 bg-white rounded-xl disabled:bg-gray-400"
             >
               <span className="text-lg text-black">
-                {loader ? "Tokenlarni yig'ish..." : "Boshlash"}
+                {loader ? <span>Tokenlarni yig'ish...</span> : "Boshlash"}
               </span>
             </button>
+
+            {/* count */}
+            <div className="opacity-70">
+              <span>Taxminiy kutish vaqti: </span>
+              <span ref={countRef}>0</span>
+              <span>s</span>
+            </div>
           </div>
         </div>
       </div>
