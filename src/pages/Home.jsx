@@ -1,14 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+// redux
+import { useSelector } from "react-redux";
+
 // components
 import Blum from "../components/img/Blum";
+import ProfileImage from "../components/ProfileImage";
 
 // images
 import hexagonImg from "../assets/images/others/hexagon-money.svg";
-import profileImage from "../assets/images/profile/profile-pic-1.png";
 
 const Home = () => {
+  const { userData } = useSelector((state) => state);
+  const userFirstName = userData.info.name;
+  const userBalance = userData.balance.amount.toLocaleString();
+
   return (
     <div className="flex flex-col gap-5 container pb-5 h-full">
       {/* header */}
@@ -30,7 +37,7 @@ const Home = () => {
               </div>
 
               {/* subtitle */}
-              <div className="text-sm opacity-60">16,367 BP</div>
+              <div className="text-sm opacity-60">{userBalance} BP</div>
             </div>
           </div>
 
@@ -47,17 +54,11 @@ const Home = () => {
       {/* mid content (profile wrapper) */}
       <div className="flex flex-col items-center justify-center mb-auto">
         {/* profile image */}
-        <img
-          width={96}
-          height={96}
-          src={profileImage}
-          alt="profile image"
-          className="size-24 bg-secondary mx-auto rounded-full mb-5"
-        />
+        <ProfileImage className="size-24 bg-secondary mx-auto rounded-full mb-5" />
 
         {/* user name */}
         <h1 className="text-2xl font-semibold text-center line-clamp-2 mb-8">
-          MrYaxyobek
+          {userFirstName}
         </h1>
 
         {/* tokens count */}
@@ -66,7 +67,7 @@ const Home = () => {
           <Blum size={32} />
 
           {/* count */}
-          <p className="text-3xl font-semibold text-center">16,376 BP</p>
+          <p className="text-3xl font-semibold text-center">{userBalance} BP</p>
         </div>
       </div>
 
