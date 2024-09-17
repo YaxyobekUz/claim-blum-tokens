@@ -1,16 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 // components
 import Blum from "../components/img/Blum";
 
+// helpers
+import { formatDate, formatTime, getRandomNumber } from "../helpers";
+
+// redux
+import { useDispatch } from "react-redux";
+import { updateUserBalanceHistory } from "../store/slices/userDataSlice";
+
 const ClaimTokens = () => {
   const countRef = useRef(null);
+  const dispatch = useDispatch();
   const consoleRef = useRef(null);
   const [JWT, setJWT] = useState(null);
   const [loader, setLoader] = useState(false);
-  const [tokensCount, setTokensCount] = useState(380);
   const savedToken = localStorage.getItem("gameToken");
   const [requestsCount, setRequestsCount] = useState(1);
+  const [tokensCount, setTokensCount] = useState("less");
   const baseUrl = "https://game-domain.blum.codes/api/v1/game/";
 
   const displayCount = (count) => {
@@ -31,6 +40,19 @@ const ClaimTokens = () => {
     }
   };
 
+  const handleUpdateUserBalanceHistory = (date, amount = 777) => {
+    const formattedDate = formatDate(date);
+    const formattedTime = formatTime(date);
+
+    dispatch(
+      updateUserBalanceHistory({
+        amount: amount,
+        date: formattedDate,
+        time: formattedTime,
+      })
+    );
+  };
+
   // display request response
   const displayRequestResponse = (msg, index) => {
     if (consoleRef) {
@@ -41,6 +63,11 @@ const ClaimTokens = () => {
         consoleRef.current.innerHTML += `<li className="font-normal">- ${msg}</li>`;
       }
     }
+  };
+
+  const errResponseAction = () => {
+    setLoader(false);
+    displayRequestResponse("Nimadir xato ketdi :(");
   };
 
   // wait (sleep)
@@ -56,7 +83,10 @@ const ClaimTokens = () => {
     // claim tokens
     for (let i = 0; i < requestsCount; i++) {
       // claim points
-      const points = tokensCount;
+      const points =
+        tokensCount === "less"
+          ? getRandomNumber(180, 220)
+          : getRandomNumber(230, 280);
 
       // req headers
       const headers = {
@@ -77,57 +107,56 @@ const ClaimTokens = () => {
       };
       delete headers["content-type"];
 
-      // play game
-      displayRequestResponse("Tokenlarni yig'ish boshlandi...", i);
-      const response = await fetch(baseUrl + "play", {
-        method: "POST",
-        headers: headers,
-      });
-      const resData = await response.json();
-      const gameId = resData.gameId;
-
-      // claim tokens
-      if (gameId) {
-        localStorage.setItem("gameToken", JWT);
-        displayRequestResponse("Bitta chipta yo'q qilindi!", i);
-
-        // playing
-        const playTime = Math.floor(Math.random() * 11 + 50) * 1000;
-        const msToS = playTime / 1000 + "s";
-        displayCount(playTime / 1000);
-        displayRequestResponse("Tokenlarni yig'ish uchun vaqt: " + msToS, i);
-        await wait(playTime);
-
-        // claim tokens
-        headers["content-type"] = "application/json";
-        delete headers["content-length"];
-        const claim = await fetch(baseUrl + "claim", {
+      try {
+        // play game
+        const response = await fetch(baseUrl + "play", {
           method: "POST",
           headers: headers,
-          body: JSON.stringify({
-            points,
-            gameId: gameId,
-          }),
         });
-        const claimText = await claim.text();
+        const resData = await response.json();
+        const gameId = resData.gameId;
 
-        // notification
-        displayRequestResponse("O'yin holati: " + claimText, i);
-        displayRequestResponse("Yig'ilgan tokenlar: " + points, i);
+        // claim tokens
+        if (gameId) {
+          localStorage.setItem("gameToken", JWT);
+          displayRequestResponse("Bitta chipta yo'q qilindi!", i);
 
-        // sleep 2
-        if (requestsCount > 1 && requestsCount - 1 !== i) {
-          const sleep = Math.floor(Math.random() * 6 + 15) * 1000;
-          const msToS = sleep / 1000 + "s";
-          displayCount(sleep / 1000);
-          displayRequestResponse("Keyingi o'yin boshlanadi: " + msToS);
-          await wait(sleep);
-        } else {
-          displayRequestResponse("O'yin tugadi!");
-        }
-      } else {
-        setLoader(false);
-        displayRequestResponse("Nimadir xato ketdi!", i);
+          // playing
+          const playTime = getRandomNumber(45, 63);
+          displayCount(playTime);
+          displayRequestResponse("Tokenlarni yig'ish: " + `${playTime}s`, i);
+          await wait(playTime * 1000);
+
+          // claim tokens
+          headers["content-type"] = "application/json";
+          delete headers["content-length"];
+          const claim = await fetch(baseUrl + "claim", {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify({
+              points,
+              gameId: gameId,
+            }),
+          });
+          const claimText = await claim.text();
+
+          // notification
+          handleUpdateUserBalanceHistory(new Date(), points);
+          displayRequestResponse("O'yin holati: " + claimText, i);
+          displayRequestResponse("Yig'ilgan tokenlar: " + points, i);
+
+          // sleep 2
+          if (requestsCount > 1 && requestsCount - 1 !== i) {
+            const sleep = getRandomNumber(8, 18);
+            displayCount(sleep);
+            displayRequestResponse("Keyingi o'yin: " + `${sleep}s`);
+            await wait(sleep * 1000);
+          } else {
+            displayRequestResponse("O'yin tugadi!");
+          }
+        } else errResponseAction();
+      } catch {
+        errResponseAction();
       }
     }
 
@@ -149,6 +178,11 @@ const ClaimTokens = () => {
 
             {/* page title */}
             <h1 className="text-3xl font-bold">Tokenlarni yig'ish</h1>
+
+            {/* homepage link */}
+            <Link to="/" className="px-5 py-2.5 rounded-lg bg-white/10">
+              Ortga qaytish
+            </Link>
           </div>
         </div>
       </header>
@@ -177,53 +211,39 @@ const ClaimTokens = () => {
             <div className="space-y-2.5">
               <label htmlFor="tokens-count">Tokenlarni olish*</label>
 
-              {/* input */}
-              <input
-                max={400}
-                type="number"
-                maxLength={3}
+              {/* select */}
+              <select
+                className="h-14"
                 id="tokens-count"
                 disabled={loader}
-                defaultValue={380}
-                name="tokens-count"
-                placeholder="Olinadigan tokenni kiriting..."
-                onChange={(e) => setTokensCount(Number(e.target.value.trim()))}
-              />
+                name="tokens count"
+                onChange={(e) => setTokensCount(e.target.value)}
+              >
+                <option value="less">Xavfsiz, kamroq</option>
+                <option value="many">Xavfli, Ko'proq</option>
+              </select>
             </div>
 
             {/* requests */}
             <div className="space-y-2.5">
               <label htmlFor="requests">So'rovlar*</label>
 
-              {/* select */}
-              <select
+              {/* input */}
+              <input
+                type="text"
                 id="requests"
+                maxLength={2}
                 name="requests"
-                className="h-14"
                 disabled={loader}
-                onChange={(e) => setRequestsCount(Number(e.target.value))}
-              >
-                <option value="1">1 marta</option>
-                <option value="2">2 marta</option>
-                <option value="3">3 marta</option>
-                <option value="4">4 marta</option>
-                <option value="5">5 marta</option>
-                <option value="6">6 marta</option>
-                <option value="7">7 marta</option>
-                <option value="8">8 marta</option>
-                <option value="9">9 marta</option>
-                <option value="10">10 marta</option>
-                <option value="11">11 marta</option>
-                <option value="12">12 marta</option>
-                <option value="13">13 marta</option>
-                <option value="14">14 marta</option>
-                <option value="15">15 marta</option>
-                <option value="16">16 marta</option>
-                <option value="17">17 marta</option>
-                <option value="18">18 marta</option>
-                <option value="19">19 marta</option>
-                <option value="20">20 marta</option>
-              </select>
+                placeholder="1 dan 99 gacha"
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  // update requests count
+                  setRequestsCount(Number(value.trim()));
+                  if (value.length > 2) e.target.value = value.slice(0, 2);
+                }}
+              />
             </div>
 
             {/* start btn */}
