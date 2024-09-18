@@ -295,12 +295,12 @@ const ClaimTokens = () => {
           {/* console wrapper */}
           <div className="bg-secondary rounded-xl">
             {/* console header */}
-            <div className="flex items-center justify-between px-3.5 py-1 border-b-2 border-secondary">
+            <div className="flex items-center justify-between pl-3.5 border-b-2 border-secondary">
               <h2 className="opacity-70">Konsol</h2>
 
               {/* clear btn */}
               <button
-                className="text-sm opacity-70"
+                className="py-2.5 px-3.5 text-sm opacity-70"
                 onClick={() => {
                   if (consoleRef) {
                     consoleRef.current.innerHTML =
@@ -317,25 +317,6 @@ const ClaimTokens = () => {
               ref={consoleRef}
               className="max-h-96 overflow-y-auto py-5 px-3 opacity-50 space-y-2.5"
             >
-              <li>- Konsol ishlamoqda...</li>
-              <li>- Konsol ishlamoqda...</li>
-              <li>- Konsol ishlamoqda...</li>
-              <li>- Konsol ishlamoqda...</li>
-              <li>- Konsol ishlamoqda...</li>
-              <li>- Konsol ishlamoqda...</li>
-              <li>- Konsol ishlamoqda...</li>
-              <li>- Konsol ishlamoqda...</li>
-              <li>- Konsol ishlamoqda...</li>
-              <li>- Konsol ishlamoqda...</li>
-              <li>- Konsol ishlamoqda...</li>
-              <li>- Konsol ishlamoqda...</li>
-              <li>- Konsol ishlamoqda...</li>
-              <li>- Konsol ishlamoqda...</li>
-              <li>- Konsol ishlamoqda...</li>
-              <li>- Konsol ishlamoqda...</li>
-              <li>- Konsol ishlamoqda...</li>
-              <li>- Konsol ishlamoqda...</li>
-              <li>- Konsol ishlamoqda...</li>
               <li>- Konsol ishlamoqda...</li>
             </ul>
 
