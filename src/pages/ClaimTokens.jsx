@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 // components
@@ -20,6 +20,7 @@ const ClaimTokens = () => {
   const savedToken = localStorage.getItem("gameToken");
   const [requestsCount, setRequestsCount] = useState(1);
   const [tokensCount, setTokensCount] = useState("less");
+  const [autoScrollDown, setAutoScrollDown] = useState(true);
   const baseUrl = "https://game-domain.blum.codes/api/v1/game/";
 
   const displayCount = (count) => {
@@ -62,12 +63,20 @@ const ClaimTokens = () => {
       } else {
         consoleRef.current.innerHTML += `<li className="font-normal">- ${msg}</li>`;
       }
+
+      // scroll to bottom
+      if (autoScrollDown) {
+        consoleRef.current.scrollTo({
+          top: consoleRef.current.scrollHeight,
+          behavior: "smooth",
+        });
+      }
     }
   };
 
-  const errResponseAction = () => {
-    setLoader(false);
-    displayRequestResponse("Nimadir xato ketdi :(");
+  const errResponseAction = (i, removeLoader = true) => {
+    if (removeLoader) setLoader(false);
+    displayRequestResponse("Nimadir xato ketdi :(", i);
   };
 
   // wait (sleep)
@@ -85,8 +94,8 @@ const ClaimTokens = () => {
       // claim points
       const points =
         tokensCount === "less"
-          ? getRandomNumber(180, 220)
-          : getRandomNumber(230, 280);
+          ? getRandomNumber(160, 215)
+          : getRandomNumber(240, 280);
 
       // req headers
       const headers = {
@@ -147,16 +156,16 @@ const ClaimTokens = () => {
 
           // sleep 2
           if (requestsCount > 1 && requestsCount - 1 !== i) {
-            const sleep = getRandomNumber(8, 18);
+            const sleep = getRandomNumber(12, 18);
             displayCount(sleep);
             displayRequestResponse("Keyingi o'yin: " + `${sleep}s`);
             await wait(sleep * 1000);
           } else {
             displayRequestResponse("O'yin tugadi!");
           }
-        } else errResponseAction();
+        }
       } catch {
-        errResponseAction();
+        errResponseAction(i, false);
       }
     }
 
@@ -219,14 +228,14 @@ const ClaimTokens = () => {
                 name="tokens count"
                 onChange={(e) => setTokensCount(e.target.value)}
               >
-                <option value="less">Xavfsiz, kamroq</option>
-                <option value="many">Xavfli, Ko'proq</option>
+                <option value="less">Xavfsizroq 160 - 215</option>
+                <option value="many">Xavfliroq 240 - 280</option>
               </select>
             </div>
 
             {/* requests */}
             <div className="space-y-2.5">
-              <label htmlFor="requests">So'rovlar*</label>
+              <label htmlFor="requests">O'ynashlar soni*</label>
 
               {/* input */}
               <input
@@ -234,6 +243,7 @@ const ClaimTokens = () => {
                 id="requests"
                 maxLength={2}
                 name="requests"
+                defaultValue={1}
                 disabled={loader}
                 placeholder="1 dan 99 gacha"
                 onChange={(e) => {
@@ -270,6 +280,19 @@ const ClaimTokens = () => {
       {/* console */}
       <section className="py-5">
         <div className="container">
+          <label className="flex items-center gap-3.5 pb-5">
+            <input
+              defaultChecked
+              type="checkbox"
+              className="size-5"
+              onChange={(e) => setAutoScrollDown(e.target.checked)}
+            />
+
+            {/* text */}
+            <span className="select-none">Avtomatik pastga surish</span>
+          </label>
+
+          {/* console wrapper */}
           <div className="bg-secondary rounded-xl">
             {/* console header */}
             <div className="flex items-center justify-between px-3.5 py-1 border-b-2 border-secondary">
@@ -290,7 +313,29 @@ const ClaimTokens = () => {
             </div>
 
             {/* logs list */}
-            <ul ref={consoleRef} className="py-5 px-3 opacity-50 space-y-2.5">
+            <ul
+              ref={consoleRef}
+              className="max-h-96 overflow-y-auto py-5 px-3 opacity-50 space-y-2.5"
+            >
+              <li>- Konsol ishlamoqda...</li>
+              <li>- Konsol ishlamoqda...</li>
+              <li>- Konsol ishlamoqda...</li>
+              <li>- Konsol ishlamoqda...</li>
+              <li>- Konsol ishlamoqda...</li>
+              <li>- Konsol ishlamoqda...</li>
+              <li>- Konsol ishlamoqda...</li>
+              <li>- Konsol ishlamoqda...</li>
+              <li>- Konsol ishlamoqda...</li>
+              <li>- Konsol ishlamoqda...</li>
+              <li>- Konsol ishlamoqda...</li>
+              <li>- Konsol ishlamoqda...</li>
+              <li>- Konsol ishlamoqda...</li>
+              <li>- Konsol ishlamoqda...</li>
+              <li>- Konsol ishlamoqda...</li>
+              <li>- Konsol ishlamoqda...</li>
+              <li>- Konsol ishlamoqda...</li>
+              <li>- Konsol ishlamoqda...</li>
+              <li>- Konsol ishlamoqda...</li>
               <li>- Konsol ishlamoqda...</li>
             </ul>
 
